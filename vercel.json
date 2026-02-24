@@ -1,7 +1,7 @@
 {
     "framework": "nextjs",
     "buildCommand": "pnpm run build",
-    "outputDirectory": "frontend/.next",
+    "outputDirectory": ".next",
     "installCommand": "pnpm install",
     "github": {
         "silent": true
