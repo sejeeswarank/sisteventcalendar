@@ -1,61 +1,61 @@
-<<<<<<< HEAD
 # College Event Calendar
 
-A full-stack Next.js application for managing college events, featuring role-based access for Students and Organizers, event registration, and real-time notifications.
+A full-stack application for managing college events, featuring role-based access for Students, Organizers, and Staff, event registration, and notifications.
 
-## Technologies
-- **Framework**: Next.js 14/15 (App Router)
-- **Language**: TypeScript
-- **Database**: SQLite (via Prisma)
-- **Styling**: Tailwind CSS / CSS Modules
-- **Auth**: Custom JWT Authentication
+## Architecture & Technologies
+This is a monorepo containing a Next.js frontend and an Express backend.
+
+- **Frontend**: Next.js 14/15 (App Router), React, Tailwind CSS
+- **Backend**: Node.js, Express, TypeScript
+- **Database & Auth**: Firebase (Firestore, Firebase Auth, Firebase Storage)
+- **Language**: TypeScript throughout
+- **Package Manager**: pnpm (Workspaces)
 
 ## Getting Started
 
 ### 1. Prerequisites
 - Node.js installed (v18+)
+- pnpm installed (`npm install -g pnpm`)
+- A Firebase project with Firestore, Authentication, and Storage enabled.
 
 ### 2. Installation
+Install dependencies for the workspace (frontend and backend):
 ```bash
-npm install
+pnpm install
+```
+Or use the provided script:
+```bash
+pnpm run install:all
 ```
 
-### 3. Database Setup
-The project uses SQLite. Ensure the database schema is pushed:
-```bash
-npx prisma db push
-```
-This creates/updates `dev.db`.
-
-### 4. Environment Variables
-Check `.env` file. It should contain:
+### 3. Environment Variables
+Create a `.env` file in the root directory. It should contain your Firebase Admin SDK credentials and other configuration:
 ```ini
-DATABASE_URL="file:./dev.db"
-JWT_SECRET="your-secret-key"
-# Optional SMTP for emails
-# SMTP_HOST=...
+FIREBASE_PROJECT_ID="your-project-id"
+FIREBASE_CLIENT_EMAIL="your-client-email"
+FIREBASE_PRIVATE_KEY="your-private-key"
+FIREBASE_STORAGE_BUCKET="your-storage-bucket"
+FRONTEND_URL="http://localhost:3000"
+BACKEND_PORT=5000
 ```
+*(Reference `.env.example` if available)*
 
-### 5. Running the App
+### 4. Running the App
+Start both frontend and backend concurrently from the root directory:
 ```bash
-npm run dev
+pnpm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+- Frontend runs on [http://localhost:3000](http://localhost:3000)
+- Backend runs on [http://localhost:5000](http://localhost:5000)
 
 ## Features & Usage
 
-### Organizer Role
-1. Sign up and select "Organizer".
-2. Go to Dashboard.
-3. Click "Create Event" to add new events.
-4. Manage events and view registered attendees.
+### Role-Based Access
+- **Students**: Browse events, register, view their registrations, and receive notifications.
+- **Organizers**: Create and manage events, view attendees.
+- **Staff**: Additional administrative permissions.
 
-### Student Role
-1. Sign up and select "Student".
-2. Browse events on the Calendar or Dashboard.
-3. Click "Register" on an event.
-4. View your registrations in "My Events".
-5. Check "Notifications" for updates.
-=======
-# sisteventcalendar
->>>>>>> ba3286775156e3ecfc33fd697fa490cf044a73c1
+## Scripts Context
+- `pnpm dev`: Runs both frontend and backend concurrently.
+- `pnpm build`: Builds the Next.js frontend.
+- `pnpm start`: Starts the built Next.js frontend.
