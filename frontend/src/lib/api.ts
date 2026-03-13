@@ -2,7 +2,7 @@ export async function apiRequest(
     endpoint: string,
     options: RequestInit = {}
 ): Promise<Response> {
-    const token = globalThis.window === undefined ? null : localStorage.getItem('token');
+    const token = globalThis.window === undefined ? null : sessionStorage.getItem('token');
 
     const headers: HeadersInit = {
         'Content-Type': 'application/json',

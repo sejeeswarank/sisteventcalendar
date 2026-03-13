@@ -29,8 +29,8 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     useEffect(() => {
         const initAuth = () => {
             try {
-                const storedUser = localStorage.getItem('user');
-                const storedToken = localStorage.getItem('token');
+                const storedUser = sessionStorage.getItem('user');
+                const storedToken = sessionStorage.getItem('token');
 
                 if (storedUser && storedToken && storedUser !== 'undefined') {
                     const parsedUser = JSON.parse(storedUser);
@@ -39,8 +39,8 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
                 }
             } catch (error) {
                 console.error("Failed to restore auth session:", error);
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
+                sessionStorage.removeItem('user');
+                sessionStorage.removeItem('token');
             } finally {
                 setIsLoading(false);
             }
@@ -53,8 +53,8 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         setToken(newToken);
         setUser(newUser);
         try {
-            localStorage.setItem('token', newToken);
-            localStorage.setItem('user', JSON.stringify(newUser));
+            sessionStorage.setItem('token', newToken);
+            sessionStorage.setItem('user', JSON.stringify(newUser));
         } catch (e) {
             console.error("Failed to save auth session:", e);
         }
@@ -73,8 +73,8 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         setToken(null);
         setUser(null);
         try {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
         } catch (e) {
             console.error("Failed to clear auth session:", e);
         }
