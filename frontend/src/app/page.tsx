@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { apiPost } from '@/lib/api';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('STUDENT'); // STUDENT, ADMIN, STAFF
@@ -12,7 +13,16 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      if (user.role === 'STUDENT') router.replace('/student/dashboard');
+      else if (user.role === 'STAFF') router.replace('/staff/dashboard');
+      else router.replace('/organizer/dashboard');
+    }
+  }, [user, isLoading, router]);
 
   const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();

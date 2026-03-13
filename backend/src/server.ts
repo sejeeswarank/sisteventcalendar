@@ -1,10 +1,6 @@
+import './env.js'; // Must be the first import to load environment variables
 import express from 'express';
 import cors from 'cors';
-import * as dotenv from 'dotenv';
-import * as path from 'node:path';
-
-// Load env from root .env file
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Import routes
 import authRoutes from './routes/auth.js';
