@@ -13,8 +13,8 @@ export default function MyRegistrations() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!isLoading && !user) router.push('/');
-        if (!isLoading && user && user.role !== 'STUDENT') router.push('/organizer/dashboard');
+        if (!isLoading && !user) router.replace('/');
+        if (!isLoading && user && user.role !== 'STUDENT') router.replace('/organizer/dashboard');
     }, [user, isLoading, router]);
 
     useEffect(() => {
@@ -60,7 +60,8 @@ export default function MyRegistrations() {
                                 }}>
                                     Registered
                                 </span>
-                                <span className="text-muted" style={{ fontSize: '0.8rem' }}>{reg.createdAt ? `Registered on ${format(parseISO(reg.createdAt), 'P')}` : ''}</span>
+                                <span className="text-muted" style={{ fontSize: '0.8rem' }}>{reg.createdAt ?
+                                    `Registered on ${format(parseISO(reg.createdAt), 'P')}` : ''}</span>
                             </div>
                         </div>
                     ))

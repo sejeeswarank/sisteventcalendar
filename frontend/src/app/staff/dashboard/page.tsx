@@ -28,18 +28,15 @@ export default function StaffDashboard() {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
-        if (!isLoading && !user) router.push('/');
+        if (!isLoading && !user) router.replace('/');
         // Redirect if not eligible role (Staff or Admin)
-        if (!isLoading && user && user.role !== 'STAFF' && user.role !== 'ADMIN') router.push('/');
+        if (!isLoading && user && user.role !== 'STAFF' && user.role !== 'ADMIN') router.replace('/');
     }, [user, isLoading, router]);
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                // Fetch all events for now, or filter by month range if API supported it.
-                // Given API endpoint fetches all or by specific date. fetching all to populate calendar dots.
                 const res = await apiGet('/api/events');
                 if (res.ok) {
                     const data = await res.json();
@@ -60,8 +57,6 @@ export default function StaffDashboard() {
     });
 
     const selectedEvents = events.filter(event => isSameDay(parseISO(event.date), selectedDate));
-
-
 
     if (isLoading || loading) return <div className="container" style={{ paddingTop: '80px', textAlign: 'center' }}>Loading...</div>;
 
@@ -121,10 +116,6 @@ export default function StaffDashboard() {
                                     key={day.toISOString()}
                                     className="calendar-day"
                                     onClick={() => setSelectedDate(day)}
-                                    // Button handles enter/space natively, but if we want custom logic or just rely on click:
-                                    // onClick handles both for <button>.
-                                    // Removing explicit onKeyDown unless needed for specific non-standard behavior.
-                                    // SonarQube prefers semantic button.
                                     style={dayStyle}
                                 >
                                     <span>{format(day, 'd')}</span>
@@ -152,7 +143,6 @@ export default function StaffDashboard() {
                                     <p style={{ margin: '10px 0', fontSize: '0.95rem' }}>{event.description}</p>
                                     <p className="text-muted" style={{ fontSize: '0.8rem', marginBottom: '16px' }}>By {event.organizer?.name || 'Unknown'}</p>
 
-                                    {/* Staff Logic: View Attendees for ALL events */}
                                     <button
                                         onClick={() => router.push(`/organizer/events/${event.id}/attendees`)}
                                         className="btn btn-primary"

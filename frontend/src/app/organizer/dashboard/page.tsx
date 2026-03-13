@@ -8,7 +8,7 @@ import { format, parseISO } from 'date-fns';
 
 const BUILDINGS = [
     'Administrative Block', 'Colonel Dr. Jeppiaar Memorial Block', 'Central Library', 'Colonel Dr. Jeppiaar Research Park',
-    'St. Paul’s Block', 'Centre for Advanced Studies – Annexure I', 'Centre for Advanced Studies – Annexure II', 'Centre for Advanced Studies – Annexure III',
+    'St. Paul\'s Block', 'Centre for Advanced Studies – Annexure I', 'Centre for Advanced Studies – Annexure II', 'Centre for Advanced Studies – Annexure III',
     'Centre for Advanced Studies – Seminar Hall I', 'Centre for Advanced Studies – Seminar Hall II', 'Centre for Advanced Studies – Seminar Hall III',
     'Class Room Block 01', 'Class Room Block 02', 'Class Room Block 03', 'Class Room Block 04', 'Class Room Block 06', 'Class Room Block 07', 'Class Room Block 08',
     'Class Room Block 14', 'Class Room Block 15', 'Class Room Block 16', 'Class Room Block 18', 'Class Room Block 19',
@@ -43,7 +43,6 @@ export default function OrganizerDashboard() {
     const [events, setEvents] = useState<Event[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-
     const [uploading, setUploading] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -56,8 +55,8 @@ export default function OrganizerDashboard() {
     const [posterFile, setPosterFile] = useState<File | null>(null);
 
     useEffect(() => {
-        if (!isLoading && !user) router.push('/');
-        if (!isLoading && user && user.role !== 'ORGANIZER' && user.role !== 'ADMIN') router.push('/student/dashboard');
+        if (!isLoading && !user) router.replace('/');
+        if (!isLoading && user && user.role !== 'ORGANIZER' && user.role !== 'ADMIN') router.replace('/student/dashboard');
     }, [user, isLoading, router]);
 
     useEffect(() => {
@@ -95,7 +94,6 @@ export default function OrganizerDashboard() {
             reader.readAsDataURL(file);
             reader.onload = () => {
                 const result = reader.result as string;
-                // Remove the "data:*/*;base64," prefix
                 const base64 = result.split(',')[1];
                 resolve(base64);
             };
@@ -111,14 +109,8 @@ export default function OrganizerDashboard() {
 
         const uploadRes = await fetch(gasUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain;charset=utf-8',
-            },
-            body: JSON.stringify({
-                filename: file.name,
-                mimeType: file.type,
-                base64: base64
-            })
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ filename: file.name, mimeType: file.type, base64: base64 })
         });
 
         if (!uploadRes.ok) throw new Error('Poster upload failed');
@@ -126,10 +118,7 @@ export default function OrganizerDashboard() {
         const uploadJson = await uploadRes.json();
         if (!uploadJson.success) throw new Error(uploadJson.error || 'Upload failed');
 
-        return {
-            url: uploadJson.previewUrl,
-            type: file.type
-        };
+        return { url: uploadJson.previewUrl, type: file.type };
     };
 
     const handleCreate = async (e: SyntheticEvent<HTMLFormElement>) => {
@@ -147,7 +136,6 @@ export default function OrganizerDashboard() {
                 uploadedPosterType = type;
             }
 
-            // Use PUT for editing, POST for creating
             const payload = {
                 ...formData,
                 posterUrl: uploadedPosterUrl,
@@ -218,7 +206,6 @@ export default function OrganizerDashboard() {
         });
         setShowForm(true);
     };
-
 
     if (isLoading) return <div className="container text-center" style={{ paddingTop: '80px' }}>Loading...</div>;
 

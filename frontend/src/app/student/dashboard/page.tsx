@@ -28,20 +28,17 @@ export default function StudentDashboard() {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
-        if (!isLoading && !user) router.push('/');
+        if (!isLoading && !user) router.replace('/');
         if (!isLoading && user && user.role !== 'STUDENT') {
-            if (user.role === 'STAFF') router.push('/staff/dashboard');
-            else router.push('/organizer/dashboard');
+            if (user.role === 'STAFF') router.replace('/staff/dashboard');
+            else router.replace('/organizer/dashboard');
         }
     }, [user, isLoading, router]);
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                // Fetch all events for now, or filter by month range if API supported it.
-                // Given API endpoint fetches all or by specific date. fetching all to populate calendar dots.
                 const res = await apiGet('/api/events');
                 if (res.ok) {
                     const data = await res.json();
@@ -62,8 +59,6 @@ export default function StudentDashboard() {
     });
 
     const selectedEvents = events.filter(event => isSameDay(parseISO(event.date), selectedDate));
-
-
 
     if (isLoading || loading) return <div className="container" style={{ paddingTop: '80px', textAlign: 'center' }}>Loading...</div>;
 
@@ -91,7 +86,6 @@ export default function StudentDashboard() {
                             const isCurrentMonth = isSameMonth(day, currentDate);
                             const dayEvents = events.filter(e => isSameDay(parseISO(e.date), day));
                             const hasEvent = dayEvents.length > 0;
-
 
                             let dayBackground = 'transparent';
                             let dayColor = 'var(--text-muted)';

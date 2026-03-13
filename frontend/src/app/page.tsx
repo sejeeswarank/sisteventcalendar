@@ -18,9 +18,9 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading && user) {
-      if (user.role === 'STUDENT') router.replace('/student/dashboard');
-      else if (user.role === 'STAFF') router.replace('/staff/dashboard');
-      else router.replace('/organizer/dashboard');
+      if (user.role === 'STUDENT') router.push('/student/dashboard');
+      else if (user.role === 'STAFF') router.push('/staff/dashboard');
+      else router.push('/organizer/dashboard');
     }
   }, [user, isLoading, router]);
 

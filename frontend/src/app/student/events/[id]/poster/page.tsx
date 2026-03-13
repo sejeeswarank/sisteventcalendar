@@ -11,7 +11,6 @@ const EventPoster = ({ event }: { event: any }) => {
         return <div className="text-muted p-20">No Poster Available</div>;
     }
 
-    // Extract ID to construct a direct image URL if possible
     const match = event.posterUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
     const fileId = match ? match[1] : null;
     const directUrl = fileId ? `https://drive.google.com/uc?export=view&id=${fileId}` : event.posterUrl;
@@ -65,8 +64,8 @@ export default function PosterPage({ params }: Readonly<{ params: Promise<{ id: 
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        if (!isLoading && !user) router.push('/');
-        if (!isLoading && user && user.role !== 'STUDENT') router.push('/');
+        if (!isLoading && !user) router.replace('/');
+        if (!isLoading && user && user.role !== 'STUDENT') router.replace('/');
     }, [isLoading, user, router]);
 
     useEffect(() => {
@@ -179,7 +178,6 @@ export default function PosterPage({ params }: Readonly<{ params: Promise<{ id: 
                 </div>
             </div>
 
-            {/* Confirmation Modal */}
             {showModal && (
                 <div style={{
                     position: 'fixed',
