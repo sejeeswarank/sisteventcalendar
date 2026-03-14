@@ -1,10 +1,6 @@
 import admin from 'firebase-admin';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 
-export let db: admin.firestore.Firestore;
-export let auth: admin.auth.Auth;
-export let storage: admin.storage.Storage;
-
 if (!getApps().length) {
     try {
         let parsedPrivateKey = process.env.FIREBASE_PRIVATE_KEY;
@@ -24,10 +20,25 @@ if (!getApps().length) {
             storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         });
         console.log('Firebase Admin Initialized successfully');
-        db = admin.firestore();
-        auth = admin.auth();
-        storage = admin.storage();
     } catch (error) {
         console.error('Firebase Admin Initialization Error:', error);
     }
 }
+
+let dbInstance: admin.firestore.Firestore | undefined;
+let authInstance: admin.auth.Auth | undefined;
+let storageInstance: admin.storage.Storage | undefined;
+
+try {
+    if (getApps().length > 0) {
+        dbInstance = admin.firestore();
+        authInstance = admin.auth();
+        storageInstance = admin.storage();
+    }
+} catch (error) {
+    console.error('Firebase Admin Service Instantiation Error:', error);
+}
+
+export const db = dbInstance as admin.firestore.Firestore;
+export const auth = authInstance as admin.auth.Auth;
+export const storage = storageInstance as admin.storage.Storage;
