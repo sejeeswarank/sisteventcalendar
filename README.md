@@ -18,7 +18,7 @@ This is a monorepo containing a Next.js frontend and an Express backend.
 - pnpm installed (`npm install -g pnpm`)
 - A Firebase project with Firestore, Authentication, and Storage enabled.
 
-### 2. Installation
+### 2. Installation:
 Install dependencies for the workspace (frontend and backend):
 ```bash
 pnpm install
